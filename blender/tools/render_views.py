@@ -21,10 +21,15 @@ scene = bpy.context.scene
 out_dir = os.path.join(BLENDER_DIR, 'renders')
 os.makedirs(out_dir, exist_ok=True)
 for name in cams:
-    inside = name.startswith('Cam_Aud')   # interior shots: hide the exterior shell (the hall sits inside it)
-    for cname in ('B1_Building', 'B1_Context'):
-        bpy.data.collections[cname].hide_render = inside
+    inside = name.startswith(('Cam_Aud', 'Cam_Sanh'))   # interior shots: hide the exterior shell
+    keep = ('B1_Sanh', 'B1_Auditorium')
+    for ch in bpy.data.collections['B1_Building'].children:
+        ch.hide_render = inside and ch.name not in keep
+    bpy.data.collections['B1_Context'].hide_render = inside
+    bpy.data.collections['B1_Auditorium'].hide_render = name == 'Cam_SanhPlan'
     bpy.data.objects['B1_AudCeiling'].hide_render = name == 'Cam_AudPlan'
+    bpy.data.objects['B1_SanhCeiling'].hide_render = name == 'Cam_SanhPlan'
+    scene.world.node_tree.nodes['Background'].inputs['Strength'].default_value = 0.3 if inside else 1.0
     scene.camera = bpy.data.objects[name]
     scene.render.filepath = os.path.join(out_dir, name + '.png')
     bpy.ops.render.render(write_still=True)

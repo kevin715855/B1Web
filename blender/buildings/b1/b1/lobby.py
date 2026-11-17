@@ -209,10 +209,7 @@ def build_f1(arc, coll):
                   REC - 0.05, d_gl + 0.12, 'B1_FrameDark')
     ef.build(coll)
 
-    # ceiling under the ring
-    so = MB('Lobby_F1_Soffit')
-    so.face([V3(q, GROUND_H) for q in P + [apex]], 'B1_Wall', (0, 0, -1))
-    so.build(coll)
+    # no soffit here: the lobby behind the glass is double height (see sanh.py)
 
 
 # --------------------------------------------------------------------------- ring, floor 2+ (white)

@@ -10,6 +10,7 @@ from .materials import make_materials
 from .meshkit import collection
 from .osm import load_osm, make_projector
 from .rooftop import build_rooftop
+from .sanh import build_sanh
 from .scene import setup_scene
 from .tower import build_tower
 from .wings import build_wings, load_parts
@@ -54,7 +55,8 @@ def run(osm_path):
     build_tower(arc, info, c_b1)
     build_rooftop(info, c_b1)
 
-    build_auditorium(root, info)  # sibling of B1_Building so the exterior .glb export stays unchanged
+    build_sanh(c_b1, info)
+    build_auditorium(c_b1, info)
     build_ground(c_ctx)
     if config.BUILD_CONTEXT:
         b1_outline = [proj(r) for r in ways[B1_WAY]['refs'][:-1]]
